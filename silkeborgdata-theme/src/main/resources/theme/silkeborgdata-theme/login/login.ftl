@@ -55,9 +55,11 @@
             <div id="kc-social-providers" class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}">
                 <ul class="${properties.kcFormSocialAccountListClass!} <#if social.providers?size gt 4>${properties.kcFormSocialAccountDoubleListClass!}</#if>">
                     <p>hello world, goodbye world. Attribute 'foo': </p>
-                    
+
                     <#list social.providers as p>
-                        <li class="${properties.kcFormSocialAccountListLinkClass!}"><a href="${p.loginUrl}" id="zocial-${p.alias}" class="zocial ${p.providerId}"> <span>${p.displayName}</span></a></li>
+                        <#if ALLOWED_LOGIN_METHODS?seq_contains(p.alias)>
+                            <li class="${properties.kcFormSocialAccountListLinkClass!}"><a href="${p.loginUrl}" id="zocial-${p.alias}" class="zocial ${p.providerId}"> <span>${p.displayName}</span></a></li>
+                        </#if>
                     </#list>
                 </ul>
             </div>
