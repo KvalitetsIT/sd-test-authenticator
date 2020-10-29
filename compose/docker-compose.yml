@@ -1,0 +1,24 @@
+version: '2'
+services:
+   keycloak:
+     image: jboss/keycloak:9.0.2
+     environment:
+       - KEYCLOAK_USER=medcom
+       - KEYCLOAK_PASSWORD=Test1234
+       - KEYCLOAK_LOGLEVEL=DEBUG
+       - PROXY_ADDRESS_FORWARDING=true
+       - KEYCLOAK_IMPORT=/tmp/test-realm.json,/tmp/broker-realm.json,/tmp/form-realm.json
+     volumes:
+       - ./realms/test-realm.json:/tmp/test-realm.json
+       - ./realms/broker-realm.json:/tmp/broker-realm.json
+       - ./realms/form-realm.json:/tmp/form-realm.json
+       - ./scripts/disable-theme-cache.cli:/opt/jboss/startup-scripts/disable-theme-cache.cli
+#       - ../authenticator-ear/target/keycloak-sd-authenticator.ear:/opt/jboss/keycloak/standalone/deployments/keycloak-sd-authenticator.ear
+       - ../authenticator/target/keycloak-sd-authenticator.jar:/opt/jboss/keycloak/standalone/deployments/keycloak-sd-authenticator.jar
+#       - ../sd-login-theme/target/keycloak-sd-login-theme-1.0.0.jar:/opt/jboss/keycloak/standalone/deployments/keycloak-sd-login-theme-1.0.0.jar
+       - ../medarbejdernet-theme/target/medarbejdernet-theme-1.0.0.jar:/opt/jboss/keycloak/standalone/deployments/medarbejdernet-theme-1.0.0.jar
+#       - ../sd-login-theme/src/main/resources/theme/sd-login-theme/login/login.ftl:/opt/jboss/keycloak/themes/base/login/login.ftl
+     ports:
+      - "5005:5005"
+      - "8080:8080"
+     command: "--debug *:5005"
