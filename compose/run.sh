@@ -32,13 +32,6 @@ echo "Getting access token ..."
 token=$(curl -s -d client_id=admin-cli -d username=medcom -d password=Test1234 -d grant_type=password http://localhost:8080/auth/realms/master/protocol/openid-connect/token | jq -r .access_token)
 echo "Got access token $token, creating test user ..."
 
-echo "Creating test user in test realm ..."
-code=$(curl -s -d "{\"username\": \"test\", \"credentials\": [ { \"type\": \"password\", \"value\": \"Test1234\" } ], \"enabled\": true}" -H "Authorization: bearer $token" -X POST --header "Content-Type: application/json" -w "%{http_code}" http://localhost:8080/auth/admin/realms/test/users);
-if [ $code -ne 201 ]; then
-    echo "Could not create test user, got statuscode $code back. Failing ..."
-    exit 1
-fi
-
 echo "Creating test user in form realm ..."
 code=$(curl -s -d "{\"username\": \"test\", \"credentials\": [ { \"type\": \"password\", \"value\": \"Test1234\" } ], \"enabled\": true}" -H "Authorization: bearer $token" -X POST --header "Content-Type: application/json" -w "%{http_code}" http://localhost:8080/auth/admin/realms/form/users);
 if [ $code -ne 201 ]; then

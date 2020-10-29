@@ -7,11 +7,12 @@ services:
        - KEYCLOAK_PASSWORD=Test1234
        - KEYCLOAK_LOGLEVEL=DEBUG
        - PROXY_ADDRESS_FORWARDING=true
-       - KEYCLOAK_IMPORT=/tmp/test-realm.json,/tmp/broker-realm.json,/tmp/form-realm.json
+       - KEYCLOAK_IMPORT=/tmp/broker-realm.json,/tmp/form-realm.json,/tmp/nemid-realm.json,/tmp/oiosaml-realm.json
      volumes:
-       - ./realms/test-realm.json:/tmp/test-realm.json
        - ./realms/broker-realm.json:/tmp/broker-realm.json
        - ./realms/form-realm.json:/tmp/form-realm.json
+       - ./realms/nemid-realm.json:/tmp/nemid-realm.json
+       - ./realms/oiosaml-realm.json:/tmp/oiosaml-realm.json
        - ./scripts/disable-theme-cache.cli:/opt/jboss/startup-scripts/disable-theme-cache.cli
 #       - ../authenticator-ear/target/keycloak-sd-authenticator.ear:/opt/jboss/keycloak/standalone/deployments/keycloak-sd-authenticator.ear
        - ../authenticator/target/keycloak-sd-authenticator.jar:/opt/jboss/keycloak/standalone/deployments/keycloak-sd-authenticator.jar
