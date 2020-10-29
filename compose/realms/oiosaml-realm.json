@@ -278,17 +278,17 @@
     },
     {
       "id": "9142d918-ee15-4de2-bd8c-070a1538e9a0",
-      "clientId": "http://localhost:8080/auth/realms/broker",
+      "clientId": "http://localhost:8787/auth/realms/broker",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://localhost:8080/auth/realms/broker/broker/oiosaml/endpoint"
+        "http://localhost:8787/auth/realms/broker/broker/oiosaml/endpoint"
       ],
       "webOrigins": [
-        "http://localhost:8080"
+        "http://localhost:8787"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -304,9 +304,9 @@
         "saml.assertion.signature": "false",
         "saml.force.post.binding": "true",
         "saml.multivalued.roles": "false",
-        "saml_single_logout_service_url_post": "http://localhost:8080/auth/realms/broker/broker/oiosaml/endpoint",
+        "saml_single_logout_service_url_post": "http://localhost:8787/auth/realms/broker/broker/oiosaml/endpoint",
         "saml.encrypt": "false",
-        "saml_assertion_consumer_url_post": "http://localhost:8080/auth/realms/broker/broker/oiosaml/endpoint",
+        "saml_assertion_consumer_url_post": "http://localhost:8787/auth/realms/broker/broker/oiosaml/endpoint",
         "saml.server.signature": "false",
         "saml.server.signature.keyinfo.ext": "false",
         "exclude.session.state.from.auth.response": "false",

@@ -22,5 +22,12 @@ services:
 #       - ../sd-login-theme/src/main/resources/theme/sd-login-theme/login/login.ftl:/opt/jboss/keycloak/themes/base/login/login.ftl
      ports:
       - "5005:5005"
-      - "8080:8080"
      command: "--debug *:5005"
+
+   nginx:
+     image: nginx:1.17.8
+     volumes:
+       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+       - ./nginx/conf.d/80_default.conf:/etc/nginx/conf.d/80_default.conf
+     ports:
+       - 8787:80
