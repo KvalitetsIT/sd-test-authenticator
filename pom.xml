@@ -85,5 +85,6 @@
     <module>authenticator-ear</module>
     <module>sd-login-theme</module>
     <module>medarbejdernet-theme</module>
+    <module>silkeborgdata-theme</module>
   </modules>
 </project>
