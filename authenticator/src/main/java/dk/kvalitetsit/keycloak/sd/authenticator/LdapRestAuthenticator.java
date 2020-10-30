@@ -29,6 +29,7 @@ public class LdapRestAuthenticator extends UsernamePasswordForm {
         }
         else if (this.validateForm(context, formData)) {
             context.success();
+            context.getEvent().detail("INST", "Initech");
         }
     }
 
