@@ -10,15 +10,15 @@ import org.keycloak.provider.ProviderConfigProperty;
 
 import java.util.List;
 
-public class LoginSelectorAuthenticatorFactory implements AuthenticatorFactory {
-    public static final String PROVIDER_ID = "login-selector-authenticate";
+public class LdapRestAuthenticatorFactory implements AuthenticatorFactory {
+    public static final String PROVIDER_ID = "ldap-rest-authenticate";
 
-    public LoginSelectorAuthenticatorFactory() {
+    public LdapRestAuthenticatorFactory() {
 
     }
 
     public Authenticator create(KeycloakSession session) {
-        return new LoginSelectorAuthenticator();
+        return new LdapRestAuthenticator();
     }
 
     public void init(Config.Scope config) {
@@ -47,11 +47,11 @@ public class LoginSelectorAuthenticatorFactory implements AuthenticatorFactory {
     }
 
     public String getDisplayType() {
-        return "Retrieve available login methods";
+        return "Authenticate against LDAP.";
     }
 
     public String getHelpText() {
-        return "Retrieves possible login methods for user, puts result on session.";
+        return "Verify that login is allowed, authenticate against LDAP, display various error pages in case of failure.";
     }
 
     public List<ProviderConfigProperty> getConfigProperties() {
