@@ -1,0 +1,52 @@
+[
+  {
+    "httpRequest": {
+	"path": "/authenticate",
+	"method": "POST",
+	"body": { "username": "test", "password": "Test1234" }
+    },
+    "httpResponse": {
+	"body": { "status": "OK" }
+    }
+  },
+  {
+    "httpRequest": {
+	"path": "/authenticate",
+	"method": "POST",
+	"body": { "username": "test2", "password": "Test1234" }
+    },
+    "httpResponse": {
+	"body": { "status": "ERROR", "message": "INVALID_PASSWORD" }
+    }
+  },
+  {
+    "httpRequest": {
+	"path": "/authenticate",
+	"method": "POST",
+	"body": { "username": "test3", "password": "Test1234" }
+    },
+    "httpResponse": {
+	"body": { "status": "ERROR", "message": "INVALID_CREDENTIALS" }
+    }
+  },
+  {
+    "httpRequest": {
+	"path": "/authenticate",
+	"method": "POST",
+	"body": { "username": "test4", "password": "Test1234" }
+    },
+    "httpResponse": {
+	"body": { "status": "ERROR", "message": "ACCOUNT_DISABLED" }
+    }
+  },
+  {
+    "httpRequest": {
+	"path": "/authenticate",
+	"method": "POST",
+	"body": { "username": "test5", "password": "Test1234" }
+    },
+    "httpResponse": {
+	"body": { "status": "ERROR", "message": "ACCOUNT_LOCKED" }
+    }
+  }
+]

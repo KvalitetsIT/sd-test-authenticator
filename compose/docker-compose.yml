@@ -31,3 +31,13 @@ services:
        - ./nginx/conf.d/80_default.conf:/etc/nginx/conf.d/80_default.conf
      ports:
        - 8787:80
+
+   ldap-rest:
+     image: mockserver/mockserver
+     command: -logLevel DEBUG  -serverPort 1080
+     environment:
+       - MOCKSERVER_INITIALIZATION_JSON_PATH=/config/initializerJson.json
+     ports:
+       - 1080:1080
+     volumes:
+       - ./ldap-rest/initializerJson.json:/config/initializerJson.json
