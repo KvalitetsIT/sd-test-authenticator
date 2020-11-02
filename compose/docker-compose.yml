@@ -3,7 +3,7 @@ services:
    keycloak:
      image: jboss/keycloak:9.0.2
      environment:
-       - KEYCLOAK_USER=medcom
+       - KEYCLOAK_USER=sdadmin
        - KEYCLOAK_PASSWORD=Test1234
        - KEYCLOAK_LOGLEVEL=DEBUG
        - PROXY_ADDRESS_FORWARDING=true
