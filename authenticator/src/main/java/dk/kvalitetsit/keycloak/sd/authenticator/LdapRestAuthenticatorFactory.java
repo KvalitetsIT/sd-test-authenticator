@@ -47,7 +47,7 @@ public class LdapRestAuthenticatorFactory implements AuthenticatorFactory {
     }
 
     public String getDisplayType() {
-        return "Authenticate against LDAP.";
+        return "Authenticate against LDAP";
     }
 
     public String getHelpText() {
