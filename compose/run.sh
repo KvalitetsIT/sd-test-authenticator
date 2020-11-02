@@ -29,7 +29,7 @@ echo "Creating user for testing ..."
 
 # Get access token for the REST api
 echo "Getting access token ..."
-token=$(curl -s -d client_id=admin-cli -d username=medcom -d password=Test1234 -d grant_type=password http://localhost:8787/auth/realms/master/protocol/openid-connect/token | jq -r .access_token)
+token=$(curl -s -d client_id=admin-cli -d username=sdadmin -d password=Test1234 -d grant_type=password http://localhost:8787/auth/realms/master/protocol/openid-connect/token | jq -r .access_token)
 echo "Got access token $token, creating test user ..."
 
 echo "Creating test user in form realm ..."
