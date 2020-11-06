@@ -98,68 +98,82 @@ var doFormLogin = function() {
             var loginForm = $(formPage).find('#kc-form-login');
             console.log('got loginForm: ' + loginForm);
 
-            // Submit the login form
             var loginAction = decodeURI(loginForm.attr('action'));
-
             console.log('Posting to ' + loginAction);
-            $.post(loginAction, { username: username, password: password }, function(data, status) {
-                console.log('data: ' + data);
-                console.log('status: ' + status);
 
-                // Parse the result, extract saml parameters and url
-                var loginElems = $.parseHTML(data);
+            var foo = document.createElement('form');
+            foo.method = 'post';
+            foo.action = loginAction;
 
-                var form = $(loginElems).find('form[name="saml-post-binding"]');
-                console.log('got form: ' + form);
+            var usernameInput = document.createElement('input');
+            usernameInput.type = 'hidden';
+            usernameInput.name = 'username';
+            usernameInput.value = username;
+            foo.appendChild(usernameInput);
 
-                // Get action and parameters
-                var action = form.attr('action');
-                var samlResponse = form.children('input[name="SAMLResponse"]').val();
-                var relayState = form.children('input[name="RelayState"]').val();
+            var passwordInput = document.createElement('input');
+            passwordInput.type = 'hidden';
+            passwordInput.name = 'password';
+            passwordInput.value = password;
+            foo.appendChild(passwordInput);
 
-                console.log('action: ' + action);
-                console.log('samlResponse: ' + samlResponse);
-                console.log('relayState: ' + relayState);
+            document.body.appendChild(foo);
+            foo.submit();
 
-                var foo = document.createElement('form');
-                foo.method = 'post';
-                foo.action = action;
 
-                var srInput = document.createElement('input');
-                srInput.type = 'hidden';
-                srInput.name = 'SAMLResponse';
-                srInput.value = samlResponse;
-                foo.appendChild(srInput);
-
-                var rsInput = document.createElement('input');
-                rsInput.type = 'hidden';
-                rsInput.name = 'RelayState';
-                rsInput.value = relayState;
-                foo.appendChild(rsInput);
-
-                document.body.appendChild(foo);
-                foo.submit();
-
+//            // Submit the login form
+//            var loginAction = decodeURI(loginForm.attr('action'));
 //
-//                console.log('Making POST-request to ' + action);
-//                $.post({
-//                    url: action,
-//                    data: { SAMLResponse: samlResponse, RelayState: relayState },
-//                    success: function(data, status, jqXHR) {
-//                        console.log('jqXHR.responseURL: ' + jqXHR.responseURL);
-//                        console.log('data: ' + data);
-//                        console.log('status: ' + status);
-//                    },
-//                    statusCode: {
-//                        302: function(jqXHR, status, err) {
-//                            console.log('302!!!');
-//                            console.log('status: ' + status);
-//                            console.log('err: ' + err);
-//                        }
+//            console.log('Posting to ' + loginAction);
+//            $.post({
+//                url: loginAction,
+//                data: { username: username, password: password },
+//                error: function(jqXHR, status, err) {
+//                    console.log('err: ' + err);
+//                    console.log('status: ' + status);
+//                    if(err === 'Internal Server Error') {
+//                        window.location.replace('/auth/realms/broker/' + clientId);
 //                    }
-//                });
-                //$.post(action, { SAMLResponse: samlResponse, RelayState: relayState }, ;
-            });
+//                },
+//                success: function(data, status) {
+//                    console.log('data: ' + data);
+//                    console.log('status: ' + status);
+//
+//                    // Parse the result, extract saml parameters and url
+//                    var loginElems = $.parseHTML(data);
+//
+//                    var form = $(loginElems).find('form[name="saml-post-binding"]');
+//                    console.log('got form: ' + form);
+//
+//                    // Get action and parameters
+//                    var action = form.attr('action');
+//                    var samlResponse = form.children('input[name="SAMLResponse"]').val();
+//                    var relayState = form.children('input[name="RelayState"]').val();
+//
+//                    console.log('action: ' + action);
+//                    console.log('samlResponse: ' + samlResponse);
+//                    console.log('relayState: ' + relayState);
+//
+//                    var foo = document.createElement('form');
+//                    foo.method = 'post';
+//                    foo.action = action;
+//
+//                    var srInput = document.createElement('input');
+//                    srInput.type = 'hidden';
+//                    srInput.name = 'SAMLResponse';
+//                    srInput.value = samlResponse;
+//                    foo.appendChild(srInput);
+//
+//                    var rsInput = document.createElement('input');
+//                    rsInput.type = 'hidden';
+//                    rsInput.name = 'RelayState';
+//                    rsInput.value = relayState;
+//                    foo.appendChild(rsInput);
+//
+//                    document.body.appendChild(foo);
+//                    foo.submit();
+//                }
+//            });
         });
     });
 };
