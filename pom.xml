@@ -16,7 +16,6 @@
     <mockserver.version>5.11.1</mockserver.version>
 
     <org.json.version>20140107</org.json.version>
-    <ooapi.version>1.214.1</ooapi.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -48,11 +47,6 @@
         <groupId>org.json</groupId>
         <artifactId>json</artifactId>
         <version>${org.json.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openoces</groupId>
-        <artifactId>ooapi</artifactId>
-        <version>${ooapi.version}</version>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
