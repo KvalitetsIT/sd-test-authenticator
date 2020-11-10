@@ -34,10 +34,6 @@
       <artifactId>json</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.openoces</groupId>
-      <artifactId>ooapi</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
