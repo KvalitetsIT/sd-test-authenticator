@@ -10,8 +10,7 @@
                     <#list social.providers as p>
                         <#if ALLOWED_LOGIN_METHODS?seq_contains(p.alias)>
                             <#if p.alias = "form">
-                                <!--<div id="form-placeholder" style="display: none;">${p.loginUrl}</div>-->
-                                <div id="form-placeholder">${p.loginUrl}</div>
+                                <div id="form-placeholder" style="display: none;">${p.loginUrl}</div>
 
                                 <form id="custom-form-login" onsubmit="doFormLogin(); return false;">
                                     <div class="form-group">
