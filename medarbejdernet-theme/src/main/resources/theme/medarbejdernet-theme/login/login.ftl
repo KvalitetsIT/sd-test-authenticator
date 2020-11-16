@@ -35,7 +35,7 @@
                             		<option value="organisation-b">Organsation B</option>
                             	</select>
                                 <li class="${properties.kcFormSocialAccountListLinkClass!}">
-                                	<a id="a-${p.alias}" href="${p.loginUrl}" onclick="function appendOrg() { var orgs = document.getElementById('${p.alias}-orgs'); var orgSelect = orgs.options[orgs.selectedIndex].value; var addr = '${p.loginUrl}&kc_idp_hint='+encodeURIComponent(orgSelect); var link = document.getElementById('a-${p.alias}'); link.href=addr;  }; appendOrg();" id="zocial-${p.alias}" class="zocial ${p.providerId}"> 
+                                  	<a id="a-${p.alias}" href="${p.loginUrl}" onclick="function setOrg() { var orgs = document.getElementById('${p.alias}-orgs'); var orgSelect = orgs.options[orgs.selectedIndex].value; doIdpHintLogin(orgSelect); }; setOrg();" id="zocial-${p.alias}" class="zocial ${p.providerId}"> 
                                 	<span>${p.displayName}</span></a>
                                 </li>
                             </#if>
