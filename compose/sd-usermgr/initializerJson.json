@@ -1,0 +1,78 @@
+[
+  {
+    "httpRequest": {
+	"path": "/rest/1.0/users/test/authenticate",
+	"method": "POST",
+	"body": { "id": "test", "password": "Test1234" }
+    },
+      "httpResponse": {
+	  "statusCode": 200
+    }
+  },
+  {
+    "httpRequest": {
+	"path": "/rest/1.0/users/test2/authenticate",
+	"method": "POST",
+	"body": { "id": "test2", "password": "Test1234" }
+    },
+      "httpResponse": {
+	  "statusCode": 401,
+	  "reasonPhrase": "Wrong password"
+    }
+  },
+  {
+    "httpRequest": {
+	"path": "/rest/1.0/users/test3/authenticate",
+	"method": "POST",
+	"body": { "id": "test3", "password": "Test1234" }
+    },
+      "httpResponse": {
+	  "statusCode": 404,
+	  "reasonPhrase": "User not found"
+    }
+  },
+  {
+    "httpRequest": {
+	"path": "/rest/1.0/users/test4/authenticate",
+	"method": "POST",
+	"body": { "id": "test4", "password": "Test1234" }
+    },
+      "httpResponse": {
+	  "statusCode": 412,
+	  "reasonPhrase": "Password must be changed"
+    }
+  },
+  {
+    "httpRequest": {
+	"path": "/rest/1.0/users/test5/authenticate",
+	"method": "POST",
+	"body": { "id": "test5", "password": "Test1234" }
+    },
+      "httpResponse": {
+	  "statusCode": 409,
+	  "reasonPhrase": "The account was disabled"
+    }
+  },
+  {
+    "httpRequest": {
+	"path": "/rest/1.0/users/test6/authenticate",
+	"method": "POST",
+	"body": { "id": "test6", "password": "Test1234" }
+    },
+      "httpResponse": {
+	  "statusCode": 410,
+	  "reasonPhrase": "The account was locked temporarly"
+    }
+  },
+  {
+    "httpRequest": {
+	"path": "/rest/1.0/users/test7/authenticate",
+	"method": "POST",
+	"body": { "id": "test7", "password": "Test1234" }
+    },
+      "httpResponse": {
+	  "statusCode": 500,
+	  "reasonPhrase": "Internal error in UserManager"
+    }
+  }
+]

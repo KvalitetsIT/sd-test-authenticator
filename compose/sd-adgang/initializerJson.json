@@ -1,0 +1,20 @@
+[
+  {
+    "httpRequest": {
+	"path": "/rest/1.0/loginChoices/123",
+	"method": "GET"
+    },
+    "httpResponse": {
+	"body": { "choices": ["form", "nemid", "oiosaml"] }
+    }
+  },
+  {
+    "httpRequest": {
+	"path": "/rest/1.0/loginChoices/987",
+	"method": "GET"
+    },
+    "httpResponse": {
+	"body": { "choices": ["oiosaml"] }
+    }
+  }
+]
