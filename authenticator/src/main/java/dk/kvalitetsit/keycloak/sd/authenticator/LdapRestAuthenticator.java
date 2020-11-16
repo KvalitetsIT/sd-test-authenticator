@@ -3,16 +3,11 @@ package dk.kvalitetsit.keycloak.sd.authenticator;
 import dk.kvalitetsit.keycloak.sd.authenticator.model.LdapAuthenticationRequest;
 import dk.kvalitetsit.keycloak.sd.authenticator.model.LdapAuthenticationResponse;
 import org.apache.http.HttpStatus;
-import org.checkerframework.checker.units.qual.A;
 import org.jboss.logging.Logger;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.AuthenticationFlowError;
-import org.keycloak.authentication.Authenticator;
-import org.keycloak.authentication.authenticators.broker.IdpUsernamePasswordForm;
 import org.keycloak.authentication.authenticators.browser.UsernamePasswordForm;
 import org.keycloak.broker.provider.util.SimpleHttp;
-import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -43,61 +38,49 @@ public class LdapRestAuthenticator extends UsernamePasswordForm {
 
         // Authenticate in LDAP
         LdapAuthenticationRequest authenticationRequest = new LdapAuthenticationRequest();
-        authenticationRequest.setUsername(formData.getFirst("username"));
+        authenticationRequest.setId(formData.getFirst("username"));
         authenticationRequest.setPassword(formData.getFirst("password"));
-        SimpleHttp sh = SimpleHttp.doPost("http://ldap-rest:1080/authenticate", context.getSession()).json(authenticationRequest);
+        SimpleHttp sh = SimpleHttp.doPost(String.format("http://sd-usermgr:1082/rest/1.0/users/%s/authenticate", formData.getFirst("username")), context.getSession()).json(authenticationRequest);
 
         try {
             int status = sh.asStatus();
-            if(status != HttpStatus.SC_OK) {
-                context.failure(AuthenticationFlowError.INTERNAL_ERROR, context.form().setError("Error during authentication").createErrorPage(Response.Status.INTERNAL_SERVER_ERROR));
-            }
 
-            LdapAuthenticationResponse authenticationResponse = sh.asJson(LdapAuthenticationResponse.class);
             // Authentication successful?
-            if(authenticationResponse.getStatus().equals("OK")) {
-                // Authentication ok
+            switch(status) {
+                case HttpStatus.SC_OK:
+                    // Authentication ok
+                    UserModel user = context.getSession().users().getUserByUsername(formData.getFirst("username"), context.getRealm());
+                    if(user == null) {
+                        user = context.getSession().users().addUser(context.getRealm(), formData.getFirst("username"));
+                        user.setEnabled(true);
+                    }
 
-                UserModel user = context.getSession().users().getUserByUsername(formData.getFirst("username"), context.getRealm());
-                if(user == null) {
-                    user = context.getSession().users().addUser(context.getRealm(), formData.getFirst("username"));
-                    user.setEnabled(true);
-                }
+                    context.setUser(user);
+                    context.success();
 
-                context.setUser(user);
-                context.success();
-
-                // Add some data to login event
-                context.getEvent().detail("INST", "Initech");
-            }
-            else {
-                // Authentication failed, redirect to error pages
-
-                switch(authenticationResponse.getMessage()) {
-                    // Is password invalid?
-                    case "INVALID_PASSWORD":
-                        // Redirect to change password page
-                        context.failure(AuthenticationFlowError.INVALID_USER, context.form().setError("Password is expired, please change password").createErrorPage(Response.Status.FORBIDDEN));
-                        break;
-                    // Is invalid credentials?
-                    case "INVALID_CREDENTIALS":
-                        // Redirect to login page with error
-                        context.failure(AuthenticationFlowError.INVALID_USER, context.form().setError("Username or password is invalid.").createErrorPage(Response.Status.FORBIDDEN));
-                        break;
-                    // Is user account disabled?
-                    case "ACCOUNT_DISABLED":
-                        // Redirect to user account disabled page
-                        context.failure(AuthenticationFlowError.INVALID_USER, context.form().setError("Account is disabled.").createErrorPage(Response.Status.FORBIDDEN));
-                        break;
-                    // Is user account locked?
-                    case "ACCOUNT_LOCKED":
-                        // Redirect to user account temporarily locked page
-                        context.failure(AuthenticationFlowError.INVALID_USER, context.form().setError("Account is temporarily locked.").createErrorPage(Response.Status.FORBIDDEN));
-                        break;
-                    default:
-                        // Redirect to login page with 'unknown' error
-                        context.failure(AuthenticationFlowError.INTERNAL_ERROR, context.form().setError("Unknown error during authentication").createErrorPage(Response.Status.INTERNAL_SERVER_ERROR));
-                }
+                    // Add some data to login event
+                    context.getEvent().detail("INST", "Initech");
+                    break;
+                case HttpStatus.SC_UNAUTHORIZED:
+                case HttpStatus.SC_NOT_FOUND:
+                    // Redirect to login page with error
+                    context.failure(AuthenticationFlowError.INVALID_USER, context.form().setError("Username or password is invalid.").createErrorPage(Response.Status.UNAUTHORIZED));
+                    break;
+                case HttpStatus.SC_PRECONDITION_FAILED:
+                    // Redirect to change password page
+                    context.failure(AuthenticationFlowError.INVALID_USER, context.form().setError("Password is expired, please change password").createErrorPage(Response.Status.FORBIDDEN));
+                    break;
+                case HttpStatus.SC_CONFLICT:
+                    // Redirect to user account disabled page
+                    context.failure(AuthenticationFlowError.INVALID_USER, context.form().setError("Account is disabled.").createErrorPage(Response.Status.FORBIDDEN));
+                    break;
+                case HttpStatus.SC_GONE:
+                    // Redirect to user account temporarily locked page
+                    context.failure(AuthenticationFlowError.INVALID_USER, context.form().setError("Account is temporarily locked.").createErrorPage(Response.Status.FORBIDDEN));
+                    break;
+                default:
+                    // Redirect to login page with 'unknown' error
+                    context.failure(AuthenticationFlowError.INTERNAL_ERROR, context.form().setError("Unknown error during authentication").createErrorPage(Response.Status.INTERNAL_SERVER_ERROR));
             }
         }
         catch(IOException e) {

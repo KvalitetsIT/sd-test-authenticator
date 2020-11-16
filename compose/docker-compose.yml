@@ -34,12 +34,22 @@ services:
      ports:
        - 8787:80
 
-   ldap-rest:
+   sd-adgang:
      image: mockserver/mockserver
-     command: -logLevel DEBUG  -serverPort 1080
+     command: -logLevel DEBUG  -serverPort 1081
      environment:
        - MOCKSERVER_INITIALIZATION_JSON_PATH=/config/initializerJson.json
      ports:
-       - 1080:1080
+       - 1081:1081
      volumes:
-       - ./ldap-rest/initializerJson.json:/config/initializerJson.json
+       - ./sd-adgang/initializerJson.json:/config/initializerJson.json
+
+   sd-usermgr:
+     image: mockserver/mockserver
+     command: -logLevel DEBUG  -serverPort 1082
+     environment:
+       - MOCKSERVER_INITIALIZATION_JSON_PATH=/config/initializerJson.json
+     ports:
+       - 1082:1082
+     volumes:
+       - ./sd-usermgr/initializerJson.json:/config/initializerJson.json
