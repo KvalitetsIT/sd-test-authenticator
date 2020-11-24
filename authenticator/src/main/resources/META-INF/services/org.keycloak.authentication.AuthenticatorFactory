@@ -1,2 +1,3 @@
+dk.kvalitetsit.keycloak.sd.authenticator.CheckLoginMethodAuthenticatorFactory
 dk.kvalitetsit.keycloak.sd.authenticator.DynamicIdpUsernamePasswordFormFactory
 dk.kvalitetsit.keycloak.sd.authenticator.LdapRestAuthenticatorFactory

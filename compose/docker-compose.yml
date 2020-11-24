@@ -5,7 +5,7 @@ services:
      environment:
        - KEYCLOAK_USER=sdadmin
        - KEYCLOAK_PASSWORD=Test1234
-       - KEYCLOAK_LOGLEVEL=TRACE
+       - KEYCLOAK_LOGLEVEL=DEBUG
        - PROXY_ADDRESS_FORWARDING=true
        - KEYCLOAK_IMPORT=/tmp/broker-realm.json,/tmp/form-realm.json,/tmp/nemid-realm.json,/tmp/oiosaml-realm.json,/tmp/oiosaml-organisation-a-realm.json,/tmp/oiosaml-organisation-b-realm.json
      volumes:
