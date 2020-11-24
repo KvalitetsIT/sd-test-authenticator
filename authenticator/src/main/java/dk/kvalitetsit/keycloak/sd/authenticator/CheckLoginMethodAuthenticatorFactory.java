@@ -1,5 +1,7 @@
 package dk.kvalitetsit.keycloak.sd.authenticator;
 
+import dk.kvalitetsit.keycloak.sd.authenticator.constants.ConfigProperty;
+import dk.kvalitetsit.keycloak.sd.authenticator.constants.LoginMethod;
 import org.keycloak.Config;
 import org.keycloak.authentication.Authenticator;
 import org.keycloak.authentication.AuthenticatorFactory;
@@ -58,19 +60,19 @@ public class CheckLoginMethodAuthenticatorFactory implements AuthenticatorFactor
     public List<ProviderConfigProperty> getConfigProperties() {
         // Login method to be checked
         ProviderConfigProperty loginMethodProperty = new ProviderConfigProperty();
-        loginMethodProperty.setDefaultValue("form");
+        loginMethodProperty.setDefaultValue(LoginMethod.FORM.toString());
         loginMethodProperty.setHelpText("Choose login method to verify");
-        loginMethodProperty.setLabel("method");
-        loginMethodProperty.setName("method");
-        loginMethodProperty.setOptions(Arrays.asList("form", "nemid", "oiosaml"));
+        loginMethodProperty.setLabel(ConfigProperty.METHOD.toString().toLowerCase());
+        loginMethodProperty.setName(ConfigProperty.METHOD.toString());
+        loginMethodProperty.setOptions(Arrays.asList(LoginMethod.FORM.toString(), LoginMethod.NEMID.toString(), LoginMethod.OIOSAML.toString()));
         loginMethodProperty.setSecret(false);
         loginMethodProperty.setType(ProviderConfigProperty.LIST_TYPE);
 
         // Endpoint to use for checking
         ProviderConfigProperty endpointProperty = new ProviderConfigProperty();
         endpointProperty.setHelpText("Set endpoint to verify login method against.");
-        endpointProperty.setLabel("endpoint");
-        endpointProperty.setName("endpoint");
+        endpointProperty.setLabel(ConfigProperty.ENDPOINT.toString().toLowerCase());
+        endpointProperty.setName(ConfigProperty.ENDPOINT.toString());
         endpointProperty.setSecret(false);
         endpointProperty.setType(ProviderConfigProperty.STRING_TYPE);
 
