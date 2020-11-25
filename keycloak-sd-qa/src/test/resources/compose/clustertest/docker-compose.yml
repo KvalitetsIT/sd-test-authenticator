@@ -11,18 +11,11 @@ services:
        - KEYCLOAK_IMPORT=/tmp/broker-realm.json,/tmp/form-realm.json,/tmp/nemid-realm.json,/tmp/oiosaml-realm.json,/tmp/oiosaml-organisation-a-realm.json,/tmp/oiosaml-organisation-b-realm.json
       # - KEYCLOAK_PASSWORD_FILE:        /secrets/adminPassword
       # - JAVA_TOOL_OPTIONS:             -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0
+
       # Cluster settings
-      # - JGROUPS_DISCOVERY_PROTOCOL:    dns.DNS_PING
-      # - JGROUPS_DISCOVERY_PROPERTIES:  dns_query=keycloak-headless.keycloak.svc.cluster.local
-      # - KEYCLOAK_SERVICE_DNS_NAME:     keycloak-headless.keycloak.svc.cluster.local
- 
-       #- JGROUPS_DISCOVERY_PROTOCOL= JDBC_PING
-       #- JGROUPS_DISCOVERY_EXTERNAL_IP=keycloak0
-       #- JGROUPS_DISCOVERY_PROPERTIES= datasource_jndi_name=java:jboss/datasources/KeycloakDS,info_writer_sleep_time=500,initialize_sql="CREATE TABLE IF NOT EXISTS JGROUPSPING ( own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, created timestamp default current_timestamp, ping_data BYTEA, constraint PK_JGROUPSPING PRIMARY KEY (own_addr, cluster_name))"      
        - JGROUPS_DISCOVERY_EXTERNAL_IP=keycloak0
        - JGROUPS_DISCOVERY_PROTOCOL=TCPPING
        - JGROUPS_DISCOVERY_PROPERTIES=initial_hosts="keycloak0[7600],keycloak1[7600]"
-  
       # DB settings
        - DB_VENDOR=mysql
        - DB_ADDR=mysql
@@ -57,14 +50,8 @@ services:
        - KEYCLOAK_IMPORT=/tmp/broker-realm.json,/tmp/form-realm.json,/tmp/nemid-realm.json,/tmp/oiosaml-realm.json,/tmp/oiosaml-organisation-a-realm.json,/tmp/oiosaml-organisation-b-realm.json
       # - KEYCLOAK_PASSWORD_FILE:        /secrets/adminPassword
       # - JAVA_TOOL_OPTIONS:             -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0
+
       # Cluster settings
-      # - JGROUPS_DISCOVERY_PROTOCOL:    dns.DNS_PING
-      # - JGROUPS_DISCOVERY_PROPERTIES:  dns_query=keycloak-headless.keycloak.svc.cluster.local
-      # - KEYCLOAK_SERVICE_DNS_NAME:     keycloak-headless.keycloak.svc.cluster.local
- 
-       #- JGROUPS_DISCOVERY_PROTOCOL= JDBC_PING
-       #- JGROUPS_DISCOVERY_EXTERNAL_IP=keycloak0
-       #- JGROUPS_DISCOVERY_PROPERTIES= datasource_jndi_name=java:jboss/datasources/KeycloakDS,info_writer_sleep_time=500,initialize_sql="CREATE TABLE IF NOT EXISTS JGROUPSPING ( own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, created timestamp default current_timestamp, ping_data BYTEA, constraint PK_JGROUPSPING PRIMARY KEY (own_addr, cluster_name))"      
        - JGROUPS_DISCOVERY_EXTERNAL_IP=keycloak1
        - JGROUPS_DISCOVERY_PROTOCOL=TCPPING
        - JGROUPS_DISCOVERY_PROPERTIES=initial_hosts="keycloak0[7600],keycloak1[7600]"
