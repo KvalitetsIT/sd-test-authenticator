@@ -17,10 +17,10 @@ services:
        - ./realms/oiosaml-organisation-b-realm.json:/tmp/oiosaml-organisation-b-realm.json
        - ./scripts/disable-theme-cache.cli:/opt/jboss/startup-scripts/disable-theme-cache.cli
 #       - ../authenticator-ear/target/keycloak-sd-authenticator.ear:/opt/jboss/keycloak/standalone/deployments/keycloak-sd-authenticator.ear
-       - ../authenticator/target/keycloak-sd-authenticator.jar:/opt/jboss/keycloak/standalone/deployments/keycloak-sd-authenticator.jar
+       - ../../../../../authenticator/target/keycloak-sd-authenticator.jar:/opt/jboss/keycloak/standalone/deployments/keycloak-sd-authenticator.jar
 #       - ../sd-login-theme/target/keycloak-sd-login-theme-1.0.0.jar:/opt/jboss/keycloak/standalone/deployments/keycloak-sd-login-theme-1.0.0.jar
-       - ../medarbejdernet-theme/target/medarbejdernet-theme-1.0.0.jar:/opt/jboss/keycloak/standalone/deployments/medarbejdernet-theme-1.0.0.jar
-       - ../silkeborgdata-theme/target/silkeborgdata-theme-1.0.0.jar:/opt/jboss/keycloak/standalone/deployments/silkeborgdata-theme-1.0.0.jar
+       - ../../../../../medarbejdernet-theme/target/medarbejdernet-theme-1.0.0.jar:/opt/jboss/keycloak/standalone/deployments/medarbejdernet-theme-1.0.0.jar
+       - ../../../../../silkeborgdata-theme/target/silkeborgdata-theme-1.0.0.jar:/opt/jboss/keycloak/standalone/deployments/silkeborgdata-theme-1.0.0.jar
 #       - ../sd-login-theme/src/main/resources/theme/sd-login-theme/login/login.ftl:/opt/jboss/keycloak/themes/base/login/login.ftl
      ports:
       - "5005:5005"
