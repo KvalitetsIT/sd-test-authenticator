@@ -1,5 +1,6 @@
 package dk.kvalitetsit.keycloak.sd.authenticator;
 
+import dk.kvalitetsit.keycloak.sd.authenticator.config.ConfigPropertyExtractor;
 import dk.kvalitetsit.keycloak.sd.authenticator.constants.ConfigProperty;
 import dk.kvalitetsit.keycloak.sd.authenticator.constants.UserAttribute;
 import dk.kvalitetsit.keycloak.sd.authenticator.model.LoginChoicesResponse;
@@ -21,6 +22,8 @@ import java.util.Map;
 public class CheckLoginMethodAuthenticator implements Authenticator {
     private static final Logger LOGGER = Logger.getLogger(CheckLoginMethodAuthenticator.class);
 
+    private ConfigPropertyExtractor configPropertyExtractor = new ConfigPropertyExtractor();
+
     @Override
     public void authenticate(AuthenticationFlowContext context) {
         LOGGER.debug("Authenticate in CheckLoginMethodAuthenticator proceeding ...");
@@ -29,7 +32,7 @@ public class CheckLoginMethodAuthenticator implements Authenticator {
         List<String> allowedLoginMethods = getAllowedLoginMethods(context);
 
         // Extract attempted login method from config
-        String attemptedloginMethod = getLoginMethod(context);
+        String attemptedloginMethod = configPropertyExtractor.getLoginMethod(context);
 
         // If not allowed, redirect to error page
         if(!loginMethodAllowed(allowedLoginMethods, attemptedloginMethod)) {
@@ -41,7 +44,7 @@ public class CheckLoginMethodAuthenticator implements Authenticator {
     }
 
     private List<String> getAllowedLoginMethods(AuthenticationFlowContext context) {
-        String endpoint = getEndpoint(context);
+        String endpoint = configPropertyExtractor.getEndpoint(context);
         String institution = getInstitution(context);
 
         // Invoke sd-adgang service
@@ -59,22 +62,6 @@ public class CheckLoginMethodAuthenticator implements Authenticator {
         catch(IOException e) {
             throw new IllegalStateException("Error getting statuscode from response.", e);
         }
-    }
-
-    private String getLoginMethod(AuthenticationFlowContext context) {
-        return getPropertyFromConfig(context, ConfigProperty.METHOD);
-    }
-
-    private String getEndpoint(AuthenticationFlowContext context) {
-        return getPropertyFromConfig(context, ConfigProperty.ENDPOINT);
-    }
-
-    private String getPropertyFromConfig(AuthenticationFlowContext context, ConfigProperty property) {
-        Map<String, String> config = context.getAuthenticatorConfig().getConfig();
-        if(!config.containsKey(property.toString())) {
-            throw new IllegalStateException(String.format("Config property %s was not configured!", property));
-        }
-        return config.get(property.toString());
     }
 
     private String getInstitution(AuthenticationFlowContext context) {
