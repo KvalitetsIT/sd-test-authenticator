@@ -16,5 +16,32 @@
     "httpResponse": {
 	"body": { "choices": ["oiosaml"] }
     }
+  },
+  {
+    "httpRequest": {
+	"path": "/rest/user-1.0/hentBruger/testa/medarbejdernet",
+	"method": "GET"
+    },
+    "httpResponse": {
+	"body": { "users": [ { "username": "testa-foo", "locked": "false" }, { "username": "testa-bar", "locked": "false" } ] }
+    }
+  },
+  {
+    "httpRequest": {
+	"path": "/rest/user-1.0/hentBruger/zaphod/medarbejdernet",
+	"method": "GET"
+    },
+    "httpResponse": {
+	"body": { "users": [ { "username": "zaphod-foo", "locked": "false" }, { "username": "zaphod-bar", "locked": "true" } ] }
+    }
+  },
+  {
+    "httpRequest": {
+	"path": "/rest/user-1.0/hentBruger/ford/medarbejdernet",
+	"method": "GET"
+    },
+    "httpResponse": {
+	"body": { "users": [ { "username": "ford-foo", "locked": "false" } ] }
+    }
   }
 ]
