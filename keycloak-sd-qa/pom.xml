@@ -3,54 +3,27 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>dk.kvalitetsit.keycloak</groupId>
-		<artifactId>keycloak-sd-authenticator-parent</artifactId>
-		<version>1.0</version>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.2.RELEASE</version>
 	</parent>
 	<artifactId>keycloak-sd-qa</artifactId>
 	<dependencies>
 
-		<dependency>
-			<groupId>dk.kvalitetsit.keycloak</groupId>
-			<artifactId>keycloak-sd-authenticator</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>mockserver</artifactId>
-			<version>1.12.4</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mock-server</groupId>
-			<artifactId>mockserver-client-java</artifactId>
-			<scope>test</scope>
-		</dependency>
+		<!-- <dependency> <groupId>org.testcontainers</groupId> <artifactId>mockserver</artifactId> 
+			<version>1.12.4</version> <scope>test</scope> </dependency> <dependency> 
+			<groupId>org.mock-server</groupId> <artifactId>mockserver-client-java</artifactId> 
+			<version>1.12.4</version> <scope>test</scope> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<version>2.2.2.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 			<scope>test</scope>
-			<version>2.2.2.RELEASE</version>
 		</dependency>
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-engine</artifactId>
-			<version>1.6.2</version>
-		</dependency>
-<!-- 		<dependency>
-
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<version>5.6.0</version>
-		</dependency> -->
 
 		<dependency>
 			<groupId>org.keycloak</groupId>
@@ -73,4 +46,40 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<configuration>
+					<images>
+						<image>
+							<name>kvalitetsit/${artifactId}</name>
+							<build>
+								<tags>
+									<tag>latest</tag>
+									<tag>${git.commit.id}</tag>
+								</tags>
+								<dockerFileDir>${basedir}</dockerFileDir>
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+									<targetDir>/app</targetDir>
+								</assembly>
+							</build>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>build-image</id>
+						<phase>install</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
