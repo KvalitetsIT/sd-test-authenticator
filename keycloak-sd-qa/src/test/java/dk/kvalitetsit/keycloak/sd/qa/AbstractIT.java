@@ -27,14 +27,14 @@ import org.testcontainers.containers.wait.strategy.Wait;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = { TestConfiguration.class } ) 
-public abstract class AbstractIntegrationTest {
+public abstract class AbstractIT {
 
 	private static final String KEYCLOAK_ADMIN_USER = "sdadmin";
 	private static final String KEYCLOAK_ADMIN_PASSWD = "Test1234";
 
 
 	private static final String FORM_REALM = "form";
-	private static Logger logger = LoggerFactory.getLogger(AbstractIntegrationTest.class);
+	private static Logger logger = LoggerFactory.getLogger(AbstractIT.class);
 	private static Logger nginxLogger = LoggerFactory.getLogger("nginx-logger");
 	private static Logger keycloakLogger = LoggerFactory.getLogger("keycloak-logger");
 

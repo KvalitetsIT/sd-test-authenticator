@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class FormsLoginTest extends AbstractIntegrationTest {
+public class FormsLoginIT extends AbstractIT {
 
 	
 	@Test
