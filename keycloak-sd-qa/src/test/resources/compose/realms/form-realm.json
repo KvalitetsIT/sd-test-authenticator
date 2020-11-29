@@ -19,7 +19,7 @@
   "actionTokenGeneratedByAdminLifespan": 43200,
   "actionTokenGeneratedByUserLifespan": 300,
   "enabled": true,
-  "sslRequired": "external",
+  "sslRequired": "none",
   "registrationAllowed": false,
   "registrationEmailAsUsername": false,
   "rememberMe": false,
@@ -278,17 +278,17 @@
     },
     {
       "id": "2f063244-0100-4599-a210-5f39b073930e",
-      "clientId": "http://localhost:8787/auth/realms/broker",
+      "clientId": "http://nginx:8787/auth/realms/broker",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://localhost:8787/auth/realms/broker/broker/form/endpoint"
+        "http://nginx:8787/auth/realms/broker/broker/form/endpoint"
       ],
       "webOrigins": [
-        "http://localhost:8787"
+        "http://nginx:8787"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -304,9 +304,9 @@
         "saml.assertion.signature": "false",
         "saml.force.post.binding": "true",
         "saml.multivalued.roles": "false",
-        "saml_single_logout_service_url_post": "http://localhost:8787/auth/realms/broker/broker/form/endpoint",
+        "saml_single_logout_service_url_post": "http://nginx:8787/auth/realms/broker/broker/form/endpoint",
         "saml.encrypt": "false",
-        "saml_assertion_consumer_url_post": "http://localhost:8787/auth/realms/broker/broker/form/endpoint",
+        "saml_assertion_consumer_url_post": "http://nginx:8787/auth/realms/broker/broker/form/endpoint",
         "saml.server.signature": "false",
         "saml.server.signature.keyinfo.ext": "false",
         "exclude.session.state.from.auth.response": "false",

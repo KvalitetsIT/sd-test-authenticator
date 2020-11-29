@@ -19,7 +19,7 @@ public class FormsLoginIT extends AbstractIT {
 		RemoteWebDriver webdriver = getWebDriver();
 
 		// When
-		String result = doFormLoginFlow(webdriver, getNginxUrl("auth/realms/broker/protocol/openid-connect/auth?client_id=account&redirect_uri=http://nginx:80/auth/realms/broker/account/login-redirect&state=0/d27e373c-9402-428c-ba24-52476feba201&response_type=code&scope=openid"), uniqueUserName, password);
+		String result = doFormLoginFlow(webdriver, getNginxUrl("auth/realms/broker/protocol/openid-connect/auth?client_id=account&redirect_uri=http://nginx:8787/auth/realms/broker/account/login-redirect&state=0/d27e373c-9402-428c-ba24-52476feba201&response_type=code&scope=openid"), uniqueUserName, password);
 
 		System.out.println(result);
 		

@@ -168,18 +168,18 @@ public abstract class AbstractIT {
 	}
 
 	public String getNginxUrl(String relativePart) {
-		return "http://nginx:80"+(relativePart.startsWith("/") ? "" : "/")+relativePart;
+		return "http://nginx:8787"+(relativePart.startsWith("/") ? "" : "/")+relativePart;
 	}
 
 
 	private static GenericContainer<?> geNginxContainer(Network n) {
 		GenericContainer<?> nginxContainer = new GenericContainer<>("nginx:1.17.8")
 				.withClasspathResourceMapping("compose/nginx/nginx.conf", "/etc/nginx/nginx.conf", BindMode.READ_ONLY)
-				.withClasspathResourceMapping("compose/nginx/conf.d/80_default.conf", "/etc/nginx/conf.d/80_default.conf", BindMode.READ_ONLY)
+				.withClasspathResourceMapping("compose/nginx/conf.d/8787_default.conf", "/etc/nginx/conf.d/8787_default.conf", BindMode.READ_ONLY)
 
 				.withNetwork(n)
 				.withNetworkAliases("nginx")
-				.withExposedPorts(80);
+				.withExposedPorts(8787);
 
 		return nginxContainer;
 	}
