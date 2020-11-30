@@ -8,4 +8,5 @@ FROM kvalitetsit/keycloak-sd-authenticator:latest AS keycloak-sd-authenticator
 FROM jboss/keycloak:9.0.2
 COPY --from=medarbejdernet-theme /module/*.jar /opt/jboss/keycloak/standalone/deployments/
 COPY --from=silkeborgdata-theme /module/*.jar /opt/jboss/keycloak/standalone/deployments/
-COPY --from=keycloak-sd-authenticator /module/*.ear /opt/jboss/keycloak/standalone/deployments/
+COPY --from=keycloak-sd-authenticator /module/*.jar /opt/jboss/keycloak/standalone/deployments/
+RUN ls -la /opt/jboss/keycloak/standalone/deployments/*.jar

@@ -53,6 +53,7 @@
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 				<configuration>
+				 	<verbose>true</verbose>
 					<images>
 						<image>
 							<name>kvalitetsit/${artifactId}</name>
