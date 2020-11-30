@@ -83,7 +83,6 @@ public abstract class AbstractIT {
 				.withClasspathResourceMapping("compose/realms/oiosaml-organisation-a-realm.json", "/tmp/oiosaml-organisation-a-realm.json", BindMode.READ_ONLY)
 				.withClasspathResourceMapping("compose/realms/oiosaml-organisation-b-realm.json", "/tmp/oiosaml-organisation-b-realm.json", BindMode.READ_ONLY)
 				.withClasspathResourceMapping("compose/scripts/disable-theme-cache.cli", "/opt/jboss/startup-scripts/disable-theme-cache.cli", BindMode.READ_ONLY)
-				.withFileSystemBind("../../../../../../../../../authenticator/target/keycloak-sd-authenticator.jar", "/opt/jboss/keycloak/standalone/deployments/keycloak-sd-authenticator.jar", BindMode.READ_ONLY)
 
 				.withEnv("KEYCLOAK_USER", KEYCLOAK_ADMIN_USER)
 				.withEnv("KEYCLOAK_PASSWORD", KEYCLOAK_ADMIN_PASSWD)
