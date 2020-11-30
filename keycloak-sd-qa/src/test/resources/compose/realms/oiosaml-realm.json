@@ -19,7 +19,7 @@
   "actionTokenGeneratedByAdminLifespan": 43200,
   "actionTokenGeneratedByUserLifespan": 300,
   "enabled": true,
-  "sslRequired": "external",
+  "sslRequired": "none",
   "registrationAllowed": false,
   "registrationEmailAsUsername": false,
   "rememberMe": false,
@@ -273,7 +273,7 @@
       "admin-cli": [],
       "account-console": [],
       "broker": [],
-      "http://localhost:8787/auth/realms/broker": [],
+      "http://nginx:8787/auth/realms/broker": [],
       "account": [
         {
           "id": "9dd5904b-336c-4fed-8d3f-547ae97abb39",
@@ -537,17 +537,17 @@
     },
     {
       "id": "9142d918-ee15-4de2-bd8c-070a1538e9a0",
-      "clientId": "http://localhost:8787/auth/realms/broker",
+      "clientId": "http://nginx:8787/auth/realms/broker",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://localhost:8787/auth/realms/broker/broker/oiosaml/endpoint"
+        "http://nginx:8787/auth/realms/broker/broker/oiosaml/endpoint"
       ],
       "webOrigins": [
-        "http://localhost:8787"
+        "http://nginx:8787"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -563,9 +563,9 @@
         "saml.assertion.signature": "false",
         "saml.force.post.binding": "true",
         "saml.multivalued.roles": "false",
-        "saml_single_logout_service_url_post": "http://localhost:8787/auth/realms/broker/broker/oiosaml/endpoint",
+        "saml_single_logout_service_url_post": "http://nginx:8787/auth/realms/broker/broker/oiosaml/endpoint",
         "saml.encrypt": "false",
-        "saml_assertion_consumer_url_post": "http://localhost:8787/auth/realms/broker/broker/oiosaml/endpoint",
+        "saml_assertion_consumer_url_post": "http://nginx:8787/auth/realms/broker/broker/oiosaml/endpoint",
         "saml.server.signature": "false",
         "saml.server.signature.keyinfo.ext": "false",
         "exclude.session.state.from.auth.response": "false",
@@ -1238,11 +1238,11 @@
         "postBindingLogout": "true",
         "nameIDPolicyFormat": "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
         "postBindingResponse": "true",
-        "singleLogoutServiceUrl": "http://localhost:8787/auth/realms/oiosaml-organisation-b/protocol/saml",
+        "singleLogoutServiceUrl": "http://nginx:8787/auth/realms/oiosaml-organisation-b/protocol/saml",
         "signatureAlgorithm": "RSA_SHA256",
         "useJwksUrl": "true",
         "postBindingAuthnRequest": "true",
-        "singleSignOnServiceUrl": "http://localhost:8787/auth/realms/oiosaml-organisation-b/protocol/saml",
+        "singleSignOnServiceUrl": "http://nginx:8787/auth/realms/oiosaml-organisation-b/protocol/saml",
         "wantAuthnRequestsSigned": "true",
         "addExtensionsElementWithKeyInfo": "false",
         "principalType": "SUBJECT"
@@ -1269,11 +1269,11 @@
         "postBindingLogout": "true",
         "nameIDPolicyFormat": "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
         "postBindingResponse": "true",
-        "singleLogoutServiceUrl": "http://localhost:8787/auth/realms/oiosaml-organisation-a/protocol/saml",
+        "singleLogoutServiceUrl": "http://nginx:8787/auth/realms/oiosaml-organisation-a/protocol/saml",
         "signatureAlgorithm": "RSA_SHA256",
         "useJwksUrl": "true",
         "postBindingAuthnRequest": "true",
-        "singleSignOnServiceUrl": "http://localhost:8787/auth/realms/oiosaml-organisation-a/protocol/saml",
+        "singleSignOnServiceUrl": "http://nginx:8787/auth/realms/oiosaml-organisation-a/protocol/saml",
         "wantAuthnRequestsSigned": "true",
         "addExtensionsElementWithKeyInfo": "false",
         "principalType": "SUBJECT"
