@@ -40,6 +40,4 @@ public class FormsLoginIT extends AbstractIT {
 
 		return source2;
 	}
-
-
 }

@@ -20,7 +20,8 @@ services:
 #       - ../sd-login-theme/target/keycloak-sd-login-theme-1.0.0.jar:/opt/jboss/keycloak/standalone/deployments/keycloak-sd-login-theme-1.0.0.jar
        - ../../../../../medarbejdernet-theme/target/medarbejdernet-theme-1.0.0.jar:/opt/jboss/keycloak/standalone/deployments/medarbejdernet-theme-1.0.0.jar
        - ../../../../../silkeborgdata-theme/target/silkeborgdata-theme-1.0.0.jar:/opt/jboss/keycloak/standalone/deployments/silkeborgdata-theme-1.0.0.jar
-#       - ../sd-login-theme/src/main/resources/theme/sd-login-theme/login/login.ftl:/opt/jboss/keycloak/themes/base/login/login.ftl
+       - ../../../../../medarbejdernet-theme/src/main/resources/theme/medarbejdernet-theme/login/select-user.ftl:/opt/jboss/keycloak/themes/base/login/select-user.ftl
+#../sd-login-theme/src/main/resources/theme/sd-login-theme/login/login.ftl:/opt/jboss/keycloak/themes/base/login/login.ftl
      ports:
       - "5005:5005"
      command: "--debug *:5005"
