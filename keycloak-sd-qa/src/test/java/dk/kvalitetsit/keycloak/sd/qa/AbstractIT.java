@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.ws.rs.core.Response;
 
@@ -13,6 +14,11 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +27,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.MockServerContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.utility.DockerImageName;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = { TestConfiguration.class } ) 
@@ -42,7 +50,7 @@ public abstract class AbstractIT {
 	private static Network n;
 
 	private static BrowserWebDriverContainer<?> browser;
-	
+
 	private static Integer keycloakPort;
 	private static String keycloakHost;
 
@@ -56,11 +64,30 @@ public abstract class AbstractIT {
 
 		n = Network.newNetwork();
 
+		// Mock SD adgang
+		GenericContainer sdAdgang = new GenericContainer("mockserver/mockserver")
+				.withClasspathResourceMapping("compose/sd-adgang/initializerJson.json", "/config/initializerJson.json", BindMode.READ_ONLY)
+				.withCommand("-logLevel",  "DEBUG",  "-serverPort", "1081")
+				.withEnv("MOCKSERVER_INITIALIZATION_JSON_PATH", "/config/initializerJson.json")
+				.withNetwork(n)
+				.withNetworkAliases("sd-adgang");
+		sdAdgang.start();
+
+		// Mock SD adgang
+		GenericContainer sdUsermgr = new GenericContainer("mockserver/mockserver")
+				.withClasspathResourceMapping("compose/sd-usermgr/initializerJson.json", "/config/initializerJson.json", BindMode.READ_ONLY)
+				.withCommand("-logLevel",  "DEBUG",  "-serverPort", "1082")
+				.withEnv("MOCKSERVER_INITIALIZATION_JSON_PATH", "/config/initializerJson.json")
+				.withNetwork(n)
+				.withNetworkAliases("sd-usermgr");
+		sdUsermgr.start();
+
+
 		// Create browser
 		logger.debug("Starting selenium browser");
 		browser = createChrome(n);
 		browser.start();
-		
+
 		// Start keycloak service
 		logger.debug("Starting test keycloak");
 		GenericContainer<?> keycloakContainer = geKeycloakContainer(n);
@@ -71,6 +98,7 @@ public abstract class AbstractIT {
 		GenericContainer<?> nginxContainer = geNginxContainer(n);
 		nginxContainer.start();
 		logContainerOutput(nginxContainer, nginxLogger);		
+
 	}
 
 	private static GenericContainer<?> geKeycloakContainer(Network n) throws IOException {
@@ -86,7 +114,7 @@ public abstract class AbstractIT {
 
 				.withEnv("KEYCLOAK_USER", KEYCLOAK_ADMIN_USER)
 				.withEnv("KEYCLOAK_PASSWORD", KEYCLOAK_ADMIN_PASSWD)
-				.withEnv("KEYCLOAK_LOGLEVEL", "DEBUG")
+				.withEnv("KEYCLOAK_LOGLEVEL", "TRACE")
 				.withEnv("PROXY_ADDRESS_FORWARDING", "true")
 				.withEnv("KEYCLOAK_IMPORT", "/tmp/broker-realm.json,/tmp/form-realm.json,/tmp/nemid-realm.json,/tmp/oiosaml-realm.json,/tmp/oiosaml-organisation-a-realm.json,/tmp/oiosaml-organisation-b-realm.json")
 
@@ -101,8 +129,8 @@ public abstract class AbstractIT {
 		keycloakHost = keycloackContainer.getContainerIpAddress();
 
 		// Find the IDP certificate from keycloak and save it to temporary file for use in trust
-	/*	Not used in this test
-	 * RestTemplate restTemplate = new RestTemplate();
+		/*	Not used in this test
+		 * RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<String> idpMetadata = restTemplate.getForEntity("http://"+keycloakHost+":"+keycloakPort+"/auth/realms/broker/protocol/saml/descriptor", String.class);
 		String metadata = idpMetadata.getBody();
 
@@ -120,17 +148,29 @@ public abstract class AbstractIT {
 		writer.append(certificateContent);
 		writer.append("-----END CERTIFICATE-----\n");
 		writer.close();
-*/
+		 */
 		return keycloackContainer;
 	}
 
 	private static BrowserWebDriverContainer<?> createChrome(Network n) {
-		BrowserWebDriverContainer<?> browser = new BrowserWebDriverContainer<>().withCapabilities(new ChromeOptions()).withNetwork(n);
+
+		DesiredCapabilities caps = DesiredCapabilities.chrome();
+		LoggingPreferences logPrefs = new LoggingPreferences();
+		logPrefs.enable(LogType.BROWSER, Level.ALL);
+		caps.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+		caps.setJavascriptEnabled(true);
+		
+		caps.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
+		
+		ChromeOptions chrome = new ChromeOptions();
+	//	chrome.add
+		
+		BrowserWebDriverContainer<?> browser = new BrowserWebDriverContainer<>().withCapabilities(caps).withNetwork(n);
 		return browser;
 	}
 
 
-	
+
 	protected RemoteWebDriver getWebDriver() {
 		return browser.getWebDriver();
 	}
@@ -149,12 +189,16 @@ public abstract class AbstractIT {
 
 		UserRepresentation userRepresentation = new UserRepresentation();
 		userRepresentation.setUsername(uniqueUserName);
+		userRepresentation.setEnabled(true);
+
 		List<CredentialRepresentation> credentials = new LinkedList<CredentialRepresentation>();
 		CredentialRepresentation passwordRepresenation = new CredentialRepresentation();
 		passwordRepresenation.setValue(password);
 		passwordRepresenation.setTemporary(false);
+		passwordRepresenation.setType(CredentialRepresentation.PASSWORD);
 		credentials.add(passwordRepresenation);
 		userRepresentation.setCredentials(credentials);
+
 		Response response = keycloak.realm(FORM_REALM).users().create(userRepresentation);
 		if (response.getStatus() != 201) {
 			throw new RuntimeException(response.getStatusInfo().getReasonPhrase());

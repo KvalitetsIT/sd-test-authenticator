@@ -2,17 +2,17 @@
 <@layout.registrationLayout; section>
     <#if section = "title">
         ${msg("loginTitle",realm.name)}
-    <#elseif section = "header">
-        Select user
     <#elseif section = "form">
         <form id="select-user-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post">
             <div class="${properties.kcFormGroupClass!}">
-                <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="totp" class="${properties.kcLabelClass!}">Hvad er dit CPR nummer?</label>
-                </div>
-
                 <div class="${properties.kcInputWrapperClass!}">
-                    <input id="totp" name="cpr" type="text" class="${properties.kcInputClass!}" />
+                    <label for="select-username">Select username:</label>
+                    <select name="username" id="select-username">
+                        <option value=""></option>
+                        <#list users as u>
+                            <option value="${u.username}">${u.username}</option>
+                        </#list>
+                    </select>
                 </div>
             </div>
 
