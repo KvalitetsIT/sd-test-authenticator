@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
@@ -162,7 +163,7 @@ public abstract class AbstractIT {
 		
 		caps.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
 		
-		ChromeOptions chrome = new ChromeOptions();
+//		ChromeOptions chrome = new ChromeOptions();
 	//	chrome.add
 		
 		BrowserWebDriverContainer<?> browser = new BrowserWebDriverContainer<>().withCapabilities(caps).withNetwork(n);
@@ -189,6 +190,10 @@ public abstract class AbstractIT {
 
 		UserRepresentation userRepresentation = new UserRepresentation();
 		userRepresentation.setUsername(uniqueUserName);
+		userRepresentation.setFirstName("Test");
+		userRepresentation.setLastName("Test");
+		userRepresentation.setEmail("test@test.dk");
+		userRepresentation.setEmailVerified(true);
 		userRepresentation.setEnabled(true);
 
 		List<CredentialRepresentation> credentials = new LinkedList<CredentialRepresentation>();
@@ -214,6 +219,24 @@ public abstract class AbstractIT {
 		return "http://nginx:8787"+(relativePart.startsWith("/") ? "" : "/")+relativePart;
 	}
 
+	public void checkPageIsReady(RemoteWebDriver driver) {
+
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+
+		//This loop will rotate for 25 times to check If page Is ready after every 1 second.
+		//You can replace your value with 25 If you wants to Increase or decrease wait time.
+		for (int i=0; i<25; i++){ 
+			try {
+				Thread.sleep(1000);
+			}catch (InterruptedException e) {} 
+			//To check page ready state.
+			if (js.executeScript("return document.readyState").toString().equals("complete")){ 
+				break; 
+			}   
+		}
+		
+		return;
+	}
 
 	private static GenericContainer<?> geNginxContainer(Network n) {
 		GenericContainer<?> nginxContainer = new GenericContainer<>("nginx:1.17.8")
@@ -232,5 +255,4 @@ public abstract class AbstractIT {
 		Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(logger);
 		container.followOutput(logConsumer);
 	}
-
 }
