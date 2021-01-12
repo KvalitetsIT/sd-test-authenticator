@@ -2,6 +2,7 @@ package dk.kvalitetsit.keycloak.sd.qa;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class FormsLoginIT extends AbstractIT {
@@ -10,7 +11,7 @@ public class FormsLoginIT extends AbstractIT {
 	public void testSuccessfulLoginWithExistingUser() {
 
 		// Given
-		String uniqueUserName = "test";//+UUID.randomUUID().toString();
+		String uniqueUserName = "test";
 		String password = "Test1234";
 		createNewUserInFormsRealm(uniqueUserName, password);
 
@@ -28,6 +29,9 @@ public class FormsLoginIT extends AbstractIT {
 		webdriver.get(url);
 
 		checkPageIsReady(webdriver);
+		
+		//WebElement firstIframe = webdriver.findElementById("sdloginiframe");
+		webdriver.switchTo().frame("sdloginiframe");
 		
 		webdriver.findElementByName("username").sendKeys(username);
 		webdriver.findElementByName("password").sendKeys(password);

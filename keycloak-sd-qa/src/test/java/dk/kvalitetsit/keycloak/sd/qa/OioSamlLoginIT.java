@@ -3,7 +3,6 @@ package dk.kvalitetsit.keycloak.sd.qa;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.Select;
 
 public class OioSamlLoginIT extends AbstractIT {
 
@@ -41,8 +40,6 @@ public class OioSamlLoginIT extends AbstractIT {
 
 		checkPageIsReady(webdriver);
 
-		Select orgSelect = new Select(webdriver.findElementById("oiosaml-orgs"));
-		orgSelect.selectByValue(orgToSelect);
 		webdriver.findElementById("a-oiosaml").click();
 
 		checkPageIsReady(webdriver);
