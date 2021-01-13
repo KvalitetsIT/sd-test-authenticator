@@ -16,3 +16,13 @@ var selectLoginMethod = function(alias) {
     var searchParams = new URLSearchParams(window.location.search);
     window.location.search = searchParams.toString();    
 };
+
+var selectLoginMethodWithChannel = function(alias, channel) {
+
+    setCookieVal('selectlogin', alias, '1');
+    setCookieVal('sdchannel', channel, '1');
+
+    // Reload	
+    var searchParams = new URLSearchParams(window.location.search);
+    window.location.search = searchParams.toString();    
+};

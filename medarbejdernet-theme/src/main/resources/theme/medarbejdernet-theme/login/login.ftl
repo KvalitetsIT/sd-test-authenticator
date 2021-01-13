@@ -1,19 +1,26 @@
 <#import "template.ftl" as layout>
-<@layout.registrationLayout displayInfo=social.displayInfo displayWide=(realm.password && social.providers??); section>
+<@layout.registrationLayout; section>
     <#if section = "header">
-        ${msg("doLogIn")}
     <#elseif section = "form">
 
-    <div style="background-color: green;" id="kc-form" <#if realm.password && social.providers??>class="${properties.kcContentWrapperClass!}"</#if>>
+    <div id="kc-form" <#if realm.password && social.providers??>class="${properties.kcContentWrapperClass!}"</#if>>
         <#if realm.password && social.providers??>
-            <div id="kc-social-providers" class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}">
+            <div id="kc-social-providers">
 
-                    <#list social.providers as p>
-                        <#if ALLOWED_LOGIN_METHODS?seq_contains(p.alias)>
-                          	<a id="a-${p.alias}" href="${p.loginUrl}" onclick="function setLoginMethod(alias) { console.log('hej1 !'); selectLoginMethod(alias); }; setLoginMethod('${p.alias}'); return false;" id="zocial-${p.alias}" class="zocial ${p.providerId}"><span>${p.displayName}</span></a> 
-                        </#if>
-                    </#list>
-                    
+					<ul class="nav nav-tabs">
+	                    <#list social.providers as p>
+	                        <#if ALLOWED_LOGIN_METHODS?seq_contains(p.alias)>
+	                          <li class="nav-item">
+	                          		<#if SELECTED_LOGIN?seq_contains(p.alias)>
+		                          	    <a class="nav-link active" id="a-${p.alias}" href="#" onclick="function setLoginMethod(alias) { selectLoginMethodWithChannel(alias, 'medarbejdernet'); }; setLoginMethod('${p.alias}'); return false;" id="zocial-${p.alias}" class="zocial ${p.providerId}"><span>${p.displayName}</span></a>
+		                          	<#else>
+		                          	    <a class="nav-link" id="a-${p.alias}" href="#" onclick="function setLoginMethod(alias) { selectLoginMethodWithChannel(alias, 'medarbejdernet'); }; setLoginMethod('${p.alias}'); return false;" id="zocial-${p.alias}" class="zocial ${p.providerId}"><span>${p.displayName}</span></a>
+		                          	</#if>
+					  		  </li>
+	                        </#if>
+	                    </#list>
+					</ul>
+
                     <#list social.providers as p>
                         <#if ALLOWED_LOGIN_METHODS?seq_contains(p.alias)>
 		                    <#if SELECTED_LOGIN?seq_contains(p.alias)>
@@ -35,3 +42,4 @@
     </#if>
 
 </@layout.registrationLayout>
+
