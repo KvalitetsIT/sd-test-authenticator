@@ -38,11 +38,8 @@ public class OioSamlLoginIT extends AbstractIT {
 	public void doSelectOioSamlFlow(RemoteWebDriver webdriver, String url, String orgToSelect) {
 		webdriver.get(url);
 
-		checkPageIsReady(webdriver);
-
-		webdriver.findElementById("a-oiosaml").click();
-
-		checkPageIsReady(webdriver);
+		chooseOioSamlLoginMethod(webdriver);
+		
+		switchToLoginFrame(webdriver);
 	}
-
 }

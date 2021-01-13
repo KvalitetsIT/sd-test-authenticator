@@ -2075,7 +2075,16 @@
       "defaultAction": false,
       "priority": 1000,
       "config": {}
-    }
+    },
+    {
+      "alias": "FINALIZELOGIN",
+      "name": "Finalize Login",
+      "providerId": "FINALIZELOGIN",
+      "enabled": true,
+      "defaultAction": false,
+      "priority": 1001,
+      "config": {}
+    } 
   ],
   "browserFlow": "browser",
   "registrationFlow": "registration",

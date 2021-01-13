@@ -14,7 +14,6 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.BrowserType;
@@ -28,16 +27,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.MockServerContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.utility.DockerImageName;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = { TestConfiguration.class } ) 
 public abstract class AbstractIT {
 
+	public static final String FORM_LOGIN_CHOICE_ID = "a-form";
+	public static final String OIOSAML_LOGIN_CHOICE_ID = "a-oiosaml";
+	public static final String SD_LOGIN_IFRAME_ID = "sdloginiframe";
+
+	
 	private static final String KEYCLOAK_ADMIN_USER = "sdadmin";
 	private static final String KEYCLOAK_ADMIN_PASSWD = "Test1234";
 
@@ -59,11 +61,17 @@ public abstract class AbstractIT {
 	@BeforeClass
 	public static void setupTestEnvironment() throws IOException {
 
+		if (n != null) {
+			// Done already
+			return;
+		}
+		
+		n = Network.newNetwork();
+
 		logger.debug("Setting up test environment");
 
 		System.setProperty("javax.net.debug", "all");
 
-		n = Network.newNetwork();
 
 		// Mock SD adgang
 		GenericContainer sdAdgang = new GenericContainer("mockserver/mockserver")
@@ -254,5 +262,27 @@ public abstract class AbstractIT {
 		logger.info("Attaching logger to container: " + container.getContainerInfo().getName());
 		Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(logger);
 		container.followOutput(logConsumer);
+	}
+	
+	public void switchToLoginFrame(RemoteWebDriver webdriver) {
+		webdriver.switchTo().frame(SD_LOGIN_IFRAME_ID);
+		
+	}
+
+	public void chooseFormsLoginMethod(RemoteWebDriver webdriver) {
+		chooseLoginMethod(webdriver, FORM_LOGIN_CHOICE_ID);
+	}
+
+	public void chooseOioSamlLoginMethod(RemoteWebDriver webdriver) {
+		chooseLoginMethod(webdriver, OIOSAML_LOGIN_CHOICE_ID);
+	}
+
+	public void chooseLoginMethod(RemoteWebDriver webdriver, String loginMethodLinkId) {
+	
+		webdriver.switchTo().parentFrame();
+		
+		webdriver.findElementById(loginMethodLinkId).click();
+		
+		checkPageIsReady(webdriver);
 	}
 }
